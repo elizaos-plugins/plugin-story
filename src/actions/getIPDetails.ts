@@ -66,13 +66,19 @@ Timestamp: ${data.blockTimestamp}`;
 export const getIPDetailsAction = {
     name: "GET_IP_DETAILS",
     description: "Get details for an IP Asset on Story",
-    handler: async (
+    handler: async ({
+        runtime,
+        message,
+        state,
+        options,
+        callback,
+    }: {
         runtime: IAgentRuntime,
         message: Memory,
         state: State,
         options: any,
         callback?: HandlerCallback
-    ): Promise<boolean> => {
+    }): Promise<boolean> => {
         elizaLogger.log("Starting GET_IP_DETAILS handler...");
 
         // Initialize or update state

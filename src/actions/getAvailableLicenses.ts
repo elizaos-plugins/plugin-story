@@ -99,13 +99,19 @@ const formatLicenseTerms = (license: IPLicenseDetails): string => {
 export const getAvailableLicensesAction = {
     name: "GET_AVAILABLE_LICENSES",
     description: "Get available licenses for an IP Asset on Story",
-    handler: async (
+    handler: async ({
+        runtime,
+        message,
+        state,
+        options,
+        callback,
+    }: {
         runtime: IAgentRuntime,
         message: Memory,
         state: State,
         options: any,
-        callback?: HandlerCallback
-    ): Promise<boolean> => {
+        callback: HandlerCallback
+    }): Promise<boolean> => {
         elizaLogger.log("Starting GET_AVAILABLE_LICENSES handler...");
 
         // Initialize or update state

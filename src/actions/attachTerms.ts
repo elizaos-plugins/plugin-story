@@ -77,13 +77,19 @@ export class AttachTermsAction {
 export const attachTermsAction = {
     name: "ATTACH_TERMS",
     description: "Attach license terms to an IP Asset on Story",
-    handler: async (
+    handler: async ({
+        runtime,
+        message,
+        state,
+        options,
+        callback,
+    }: {
         runtime: IAgentRuntime,
         message: Memory,
         state: State,
         options: any,
         callback?: HandlerCallback
-    ): Promise<boolean> => {
+    }): Promise<boolean> => {
         elizaLogger.log("Starting ATTACH_TERMS handler...");
 
         // initialize or update state

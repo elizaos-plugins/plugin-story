@@ -48,13 +48,19 @@ export class LicenseIPAction {
 export const licenseIPAction = {
     name: "LICENSE_IP",
     description: "License an IP Asset on Story",
-    handler: async (
+    handler: async ({
+        runtime,
+        message,
+        state,
+        options,
+        callback,
+    }: {
         runtime: IAgentRuntime,
         message: Memory,
         state: State,
         options: any,
-        callback?: HandlerCallback
-    ): Promise<boolean> => {
+        callback: HandlerCallback
+    }): Promise<boolean> => {
         elizaLogger.log("Starting LICENSE_IP handler...");
 
         // initialize or update state
