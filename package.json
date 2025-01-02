@@ -19,5 +19,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.1"
-  }
+  },
+  "pluginType": "elizaos:plugin:1.0.0",
+  "pluginParameters": {},
+  "pluginEnv": {}
 }
