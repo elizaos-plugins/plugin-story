@@ -34,5 +34,20 @@
     },
     "devDependencies": {
         "@types/node": "^22.10.1"
+    },
+    "agentConfig": {
+        "pluginType": "elizaos:client:1.0.0",
+        "pluginParameters": {
+            "STORY_PRIVATE_KEY": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Story Protocol private key for authentication"
+            },
+            "PINATA_JWT": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Pinata JWT token for IPFS storage"
+            }
+        }
     }
 }
