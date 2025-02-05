@@ -122,7 +122,7 @@ declare class RegisterIPAction {
 declare const registerIPAction: {
     name: string;
     description: string;
-    handler: (runtime: IAgentRuntime, message: Memory, state: State, options: any, callback?: HandlerCallback) => Promise<boolean>;
+    handler: (runtime: IAgentRuntime, message: Memory, state: State, _options: Record<string, unknown>, callback?: HandlerCallback) => Promise<boolean>;
     template: string;
     validate: (runtime: IAgentRuntime) => Promise<boolean>;
     examples: ({
@@ -149,7 +149,7 @@ declare class LicenseIPAction {
 declare const licenseIPAction: {
     name: string;
     description: string;
-    handler: (runtime: IAgentRuntime, message: Memory, state: State, options: any, callback?: HandlerCallback) => Promise<boolean>;
+    handler: (runtime: IAgentRuntime, message: Memory, state: State, _options: Record<string, unknown>, callback?: HandlerCallback) => Promise<boolean>;
     template: string;
     validate: (runtime: IAgentRuntime) => Promise<boolean>;
     examples: ({
@@ -179,7 +179,7 @@ declare class AttachTermsAction {
 declare const attachTermsAction: {
     name: string;
     description: string;
-    handler: (runtime: IAgentRuntime, message: Memory, state: State, options: any, callback?: HandlerCallback) => Promise<boolean>;
+    handler: (runtime: IAgentRuntime, message: Memory, state: State, _options: Record<string, unknown>, callback?: HandlerCallback) => Promise<boolean>;
     template: string;
     validate: (runtime: IAgentRuntime) => Promise<boolean>;
     examples: ({
@@ -246,7 +246,7 @@ declare class GetAvailableLicensesAction {
 declare const getAvailableLicensesAction: {
     name: string;
     description: string;
-    handler: (runtime: IAgentRuntime, message: Memory, state: State, options: any, callback?: HandlerCallback) => Promise<boolean>;
+    handler: (runtime: IAgentRuntime, message: Memory, state: State, _options: Record<string, unknown>, callback?: HandlerCallback) => Promise<boolean>;
     template: string;
     validate: () => Promise<boolean>;
     examples: {
@@ -265,7 +265,7 @@ declare const getAvailableLicensesAction: {
 declare const getIPDetailsAction: {
     name: string;
     description: string;
-    handler: (runtime: IAgentRuntime, message: Memory, state: State, options: any, callback?: HandlerCallback) => Promise<boolean>;
+    handler: (runtime: IAgentRuntime, message: Memory, state: State, _options: Record<string, unknown>, callback?: HandlerCallback) => Promise<boolean>;
     template: string;
     validate: () => Promise<boolean>;
     examples: {

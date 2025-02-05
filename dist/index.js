@@ -6,7 +6,7 @@ import {
   ModelClass
 } from "@elizaos/core";
 import pinataSDK from "@pinata/sdk";
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 
 // src/functions/uploadJSONToIPFS.ts
 async function uploadJSONToIPFS(pinata, jsonMetadata) {
@@ -51,10 +51,8 @@ var WalletProvider = class {
     const account = privateKeyToAccount(privateKey);
     this.address = account.address;
     const config = {
-      // @ts-ignore
       account,
-      // @ts-ignore
-      transport: hwttp(DEFAULT_CHAIN_CONFIGS.odyssey.rpcUrl),
+      transport: http(DEFAULT_CHAIN_CONFIGS.odyssey.rpcUrl),
       chainId: "odyssey"
     };
     this.storyClient = StoryClient.newClient(config);
@@ -101,7 +99,7 @@ var WalletProvider = class {
   }
 };
 var storyWalletProvider = {
-  async get(runtime, message, state) {
+  async get(runtime, _message, _state) {
     if (!runtime.getSetting("STORY_PRIVATE_KEY")) {
       return null;
     }
@@ -257,15 +255,16 @@ var RegisterIPAction = class {
 var registerIPAction = {
   name: "REGISTER_IP",
   description: "Register an NFT as an IP Asset on Story",
-  handler: async (runtime, message, state, options, callback) => {
+  handler: async (runtime, message, state, _options, callback) => {
     elizaLogger.log("Starting REGISTER_IP handler...");
-    if (!state) {
-      state = await runtime.composeState(message);
+    let currentState = state;
+    if (!currentState) {
+      currentState = await runtime.composeState(message);
     } else {
-      state = await runtime.updateRecentMessageState(state);
+      currentState = await runtime.updateRecentMessageState(currentState);
     }
     const registerIPContext = composeContext({
-      state,
+      state: currentState,
       template: registerIPTemplate
     });
     const content = await generateObjectDeprecated({
@@ -1326,15 +1325,16 @@ var LicenseIPAction = class {
 var licenseIPAction = {
   name: "LICENSE_IP",
   description: "License an IP Asset on Story",
-  handler: async (runtime, message, state, options, callback) => {
+  handler: async (runtime, message, state, _options, callback) => {
     elizaLogger2.log("Starting LICENSE_IP handler...");
-    if (!state) {
-      state = await runtime.composeState(message);
+    let currentState = state;
+    if (!currentState) {
+      currentState = await runtime.composeState(message);
     } else {
-      state = await runtime.updateRecentMessageState(state);
+      currentState = await runtime.updateRecentMessageState(currentState);
     }
     const licenseIPContext = composeContext2({
-      state,
+      state: currentState,
       template: licenseIPTemplate
     });
     const content = await generateObjectDeprecated2({
@@ -1436,15 +1436,16 @@ var AttachTermsAction = class {
 var attachTermsAction = {
   name: "ATTACH_TERMS",
   description: "Attach license terms to an IP Asset on Story",
-  handler: async (runtime, message, state, options, callback) => {
+  handler: async (runtime, message, state, _options, callback) => {
     elizaLogger3.log("Starting ATTACH_TERMS handler...");
-    if (!state) {
-      state = await runtime.composeState(message);
+    let currentState = state;
+    if (!currentState) {
+      currentState = await runtime.composeState(message);
     } else {
-      state = await runtime.updateRecentMessageState(state);
+      currentState = await runtime.updateRecentMessageState(currentState);
     }
     const attachTermsContext = composeContext3({
-      state,
+      state: currentState,
       template: attachTermsTemplate
     });
     const content = await generateObjectDeprecated3({
@@ -1518,7 +1519,7 @@ var API_BASE_URL = process.env.STORY_API_BASE_URL;
 var API_VERSION = "v2";
 var API_URL = `${API_BASE_URL}/${API_VERSION}`;
 var API_KEY = process.env.STORY_API_KEY || "";
-async function getResource(resourceName, resourceId, options) {
+async function getResource(resourceName, resourceId, _options) {
   try {
     elizaLogger4.log(
       `Fetching resource ${API_URL}/${resourceName}/${resourceId}`
@@ -1534,11 +1535,10 @@ async function getResource(resourceName, resourceId, options) {
     if (res.ok) {
       elizaLogger4.log("Response is ok");
       return res.json();
-    } else {
-      elizaLogger4.log("Response is not ok");
-      elizaLogger4.log(JSON.stringify(res));
-      throw new Error(`HTTP error! status: ${res.status}`);
     }
+    elizaLogger4.log("Response is not ok");
+    elizaLogger4.log(JSON.stringify(res));
+    throw new Error(`HTTP error! status: ${res.status}`);
   } catch (error) {
     console.error(error);
   }
@@ -1597,19 +1597,23 @@ var formatLicenseTerms = (license) => {
   \u2022 Derivatives: ${terms.derivativesAllowed ? "Allowed" : "Not Allowed"}
   \u2022 Derivatives Attribution: ${terms.derivativesAttribution ? "Required" : "Not Required"}
   \u2022 Derivatives Approval: ${terms.derivativesApproval ? "Required" : "Not Required"}
-  \u2022 Revenue Share: ${terms.commercialRevenueShare ? terms.commercialRevenueShare + "%" : "Not Required"}
-`;
+  \u2022 Revenue Share: ${terms.commercialRevenueShare ? `${terms.commercialRevenueShare}%` : "Not Required"}`;
 };
 var getAvailableLicensesAction = {
   name: "GET_AVAILABLE_LICENSES",
   description: "Get available licenses for an IP Asset on Story",
-  handler: async (runtime, message, state, options, callback) => {
+  handler: async (runtime, message, state, _options, callback) => {
     elizaLogger5.log("Starting GET_AVAILABLE_LICENSES handler...");
-    state = !state ? await runtime.composeState(message) : await runtime.updateRecentMessageState(state);
+    let currentState = state;
+    if (!currentState) {
+      currentState = await runtime.composeState(message);
+    } else {
+      currentState = await runtime.updateRecentMessageState(currentState);
+    }
     const content = await generateObjectDeprecated4({
       runtime,
       context: composeContext4({
-        state,
+        state: currentState,
         template: getAvailableLicensesTemplate
       }),
       modelClass: ModelClass4.SMALL
@@ -1688,12 +1692,17 @@ Timestamp: ${data.blockTimestamp}`;
 var getIPDetailsAction = {
   name: "GET_IP_DETAILS",
   description: "Get details for an IP Asset on Story",
-  handler: async (runtime, message, state, options, callback) => {
+  handler: async (runtime, message, state, _options, callback) => {
     elizaLogger6.log("Starting GET_IP_DETAILS handler...");
-    state = !state ? await runtime.composeState(message) : await runtime.updateRecentMessageState(state);
+    let currentState = state;
+    if (!currentState) {
+      currentState = await runtime.composeState(message);
+    } else {
+      currentState = await runtime.updateRecentMessageState(currentState);
+    }
     const content = await generateObjectDeprecated5({
       runtime,
-      context: composeContext5({ state, template: getIPDetailsTemplate }),
+      context: composeContext5({ state: currentState, template: getIPDetailsTemplate }),
       modelClass: ModelClass5.SMALL
     });
     const action = new GetIPDetailsAction();
