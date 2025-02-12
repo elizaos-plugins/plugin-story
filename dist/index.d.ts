@@ -1,6 +1,6 @@
 import { IAgentRuntime, Provider, Memory, State, HandlerCallback, Plugin } from '@elizaos/core';
 import { StoryClient, RegisterIpResponse, MintLicenseTokensResponse, AttachLicenseTermsResponse, RegisterPILResponse } from '@story-protocol/core-sdk';
-import { Hash, Address, Chain, PublicClient, HttpTransport, Account, WalletClient } from 'viem';
+import { Address, Chain, Hash, PublicClient, HttpTransport, Account, WalletClient } from 'viem';
 import { Token } from '@lifi/types';
 
 type SupportedChain = "odyssey";
